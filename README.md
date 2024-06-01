@@ -93,7 +93,7 @@ This repository contains a Python script that transcribes and translates live au
       "en", "fr", "de", "es", "it", "nl", "sv", "pl", "pt", "ru", "zh", "ja", "ko", 
       "ar", "tr", "da", "fi", "no", "cs", "el"
       ```
-
+      > **Note:** Any combination of the supported languages should work. Ex. ES to EN, JA to FR, etc
 2. **Add Language to Supported List**
     - To add a new language, ensure it is supported by MarianMT and Whisper models.
     - Update the `supported_languages` list in the script with the new language code.
