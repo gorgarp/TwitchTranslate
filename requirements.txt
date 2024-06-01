@@ -1,0 +1,8 @@
+ffmpeg-python
+requests
+streamlink
+numpy
+torch
+transformers
+whisper
+langdetect
