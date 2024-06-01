@@ -176,6 +176,12 @@ The script can run on either CUDA (GPU) or CPU. Using CUDA significantly improve
 - **Logs and Debugging**:
   - Check the logs for any error messages or system messages to identify issues.
   - The script logs system messages and errors for easy debugging and monitoring.
+  - 
+## Exceptions Handling
+- The script uses a default format `Helsinki-NLP/opus-mt-{source_lang}-{target_lang}` for loading models.
+- Some language pairs do not follow this format or may not exist under this naming convention. For these, specific exceptions are added.
+- Example: For Portuguese to English (`pt-en`), the script uses `Helsinki-NLP/opus-mt-mul-en` as the model name.
+- The exceptions are defined in a dictionary and checked during model loading.
 
 ## Contributing
 1. **Fork the Repository**
