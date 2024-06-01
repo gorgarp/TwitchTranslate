@@ -37,6 +37,35 @@ supported_languages = [
 tokenizers = {}
 models = {}
 
+# List of known exceptions
+exceptions = {
+    "zh-en": "Helsinki-NLP/opus-mt-zh-en",
+    "en-zh": "Helsinki-NLP/opus-mt-en-zh",
+    "ja-en": "Helsinki-NLP/opus-mt-ja-en",
+    "en-ja": "Helsinki-NLP/opus-mt-en-ja",
+    "ko-en": "Helsinki-NLP/opus-mt-ko-en",
+    "en-ko": "Helsinki-NLP/opus-mt-en-ko",
+    "ar-en": "Helsinki-NLP/opus-mt-ar-en",
+    "en-ar": "Helsinki-NLP/opus-mt-en-ar",
+    "ru-en": "Helsinki-NLP/opus-mt-ru-en",
+    "en-ru": "Helsinki-NLP/opus-mt-en-ru",
+    "pt-en": "Helsinki-NLP/opus-mt-mul-en"  
+}
+
+def get_model_name(source_lang, target_lang):
+    """
+    Get the model name for the specified language pair, accounting for exceptions.
+
+    Args:
+        source_lang (str): Source language code.
+        target_lang (str): Target language code.
+
+    Returns:
+        str: Model name for the specified language pair.
+    """
+    model_key = f"{source_lang}-{target_lang}"
+    return exceptions.get(model_key, f"Helsinki-NLP/opus-mt-{model_key}")
+
 def load_model(source_lang, target_lang):
     """
     Load the translation model and tokenizer for the specified language pair.
@@ -48,12 +77,16 @@ def load_model(source_lang, target_lang):
     Returns:
         tuple: Tokenizer and model for the specified language pair.
     """
-    model_name = f"Helsinki-NLP/opus-mt-{source_lang}-{target_lang}"
-    if (source_lang, target_lang) not in tokenizers:
-        logging.info(f"Loading model and tokenizer for {source_lang} to {target_lang}")
-        tokenizers[(source_lang, target_lang)] = MarianTokenizer.from_pretrained(model_name)
-        models[(source_lang, target_lang)] = MarianMTModel.from_pretrained(model_name).to(device)
-    return tokenizers[(source_lang, target_lang)], models[(source_lang, target_lang)]
+    model_name = get_model_name(source_lang, target_lang)
+    try:
+        if (source_lang, target_lang) not in tokenizers:
+            logging.info(f"Loading model and tokenizer for {source_lang} to {target_lang}")
+            tokenizers[(source_lang, target_lang)] = MarianTokenizer.from_pretrained(model_name)
+            models[(source_lang, target_lang)] = MarianMTModel.from_pretrained(model_name).to(device)
+        return tokenizers[(source_lang, target_lang)], models[(source_lang, target_lang)]
+    except Exception as e:
+        logging.error(f"Error loading model {model_name}: {e}")
+        return None, None
 
 def get_access_token(client_id, client_secret):
     """
@@ -135,16 +168,19 @@ def transcribe_audio_stream(audio_stream):
     while True:
         data = audio_stream.read(4000)
         if len(data) == 0:
+            logging.info("End of audio stream")
             break
         buffer.extend(data)
         if len(buffer) >= CHUNK_SIZE * 2:
             audio_data = np.frombuffer(buffer[:CHUNK_SIZE*2], np.int16).astype(np.float32) / 32768.0  # Convert to float32
             buffer = buffer[CHUNK_SIZE*2:]  # Remove processed data from buffer
-            audio_tensor = torch.tensor(audio_data, device=device)
-            result = whisper_model.transcribe(audio_tensor)
-            text = result.get('text', '')
-            if text:
-                yield text
+            try:
+                result = whisper_model.transcribe(audio_data)
+                text = result.get('text', '')
+                if text:
+                    yield text
+            except Exception as e:
+                logging.error(f"Transcription error: {e}")
 
 def translate_text(text, source_lang, target_lang):
     """
@@ -162,6 +198,9 @@ def translate_text(text, source_lang, target_lang):
         return None  # Unsupported language pair
     
     tokenizer, model = load_model(source_lang, target_lang)
+    
+    if tokenizer is None or model is None:
+        return None
     
     translated = model.generate(**tokenizer(text, return_tensors="pt", padding=True).to(device))
     translated_text = [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
@@ -208,13 +247,20 @@ def main(source_lang, target_lang):
 
                 for transcribed_text in transcribe_audio_stream(audio_stream):
                     if transcribed_text:
-                        detected_lang = detect(transcribed_text)
+                        try:
+                            detected_lang = detect(transcribed_text)
+                        except Exception as e:
+                            logging.error(f"Language detection error: {e}")
+                            continue
+                        
                         if detected_lang == source_lang:
                             translated_text = translate_text(transcribed_text, source_lang, target_lang)
                             if translated_text:
                                 print(f"Translated Text: {translated_text}")
+                        else:
+                            logging.info(f"Ignoring text in unsupported language: {detected_lang}")
             else:
-                time.sleep(10)  # Sleep before retrying if the stream is not live
+                logging.info("Stream is not live. Retrying in 10 seconds...")
 
             time.sleep(10)  # Sleep before fetching stream metadata again
         except Exception as e:
