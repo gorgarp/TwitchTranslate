@@ -182,6 +182,7 @@ The script can run on either CUDA (GPU) or CPU. Using CUDA significantly improve
 - Some language pairs do not follow this format or may not exist under this naming convention. For these, specific exceptions are added.
 - Example: For Portuguese to English (`pt-en`), the script uses `Helsinki-NLP/opus-mt-mul-en` as the model name.
 - The exceptions are defined in a dictionary and checked during model loading.
+> **Note:**https://huggingface.co/Helsinki-NLP is where you can find language combinations.
 
 ## Contributing
 1. **Fork the Repository**
