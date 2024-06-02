@@ -105,10 +105,12 @@ def fetch_stream_metadata(access_token, channel_name):
 # Get the stream URL using streamlink
 def get_stream_url(channel_name):
     streams = streamlink.streams(f"https://www.twitch.tv/{channel_name}")
-    if "best" in streams:
+    if "audio_only" in streams:
+        return streams["audio_only"].url
+    elif "best" in streams:
         return streams["best"].url
     else:
-        raise Exception("No 'best' quality stream found.")
+        raise Exception("No suitable stream found.")
 
 # Transcribe streaming audio using Whisper
 def transcribe_audio_stream(audio_stream):
