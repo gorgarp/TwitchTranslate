@@ -73,30 +73,6 @@ Using a virtual environment is one approach to running the script. This method k
     pip install -r requirements.txt
     ```
 
-## Building the Application
-Alternatively, you can create a standalone executable using `cx_Freeze`. This method bundles all dependencies, including Python, into a single executable file.
-
-1. **Install cx_Freeze**
-    ```bash
-    pip install cx-Freeze
-    ```
-
-2. **Verify and Modify Paths in `setup.py`**
-    - **CUDA Path**: Update the `cuda_path` variable in `setup.py` to match your CUDA installation path. For example:
-      ```python
-      cuda_path = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.5/bin"
-      ```
-    - **FFmpeg Path**: Update the `ffmpeg_path` variable in `setup.py` to match the location of your FFmpeg executable. For example:
-      ```python
-      ffmpeg_path = "C:/Users/YourUsername/ffmpeg/bin"
-      ```
-
-3. **Run cx_Freeze to Build the Executable**
-    ```bash
-    python setup.py build
-    ```
-
-A pre-built version may be included in the the link below (it is way too big to add here) but it may not always be up-to-date with the latest virtual environment version.
 
 ## Configuration
 1. **Set Up Twitch API Token**
