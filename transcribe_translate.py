@@ -21,7 +21,7 @@ CLIENT_SECRET = "YOUR_TWITCH_CLIENT_SECRET"
 CHANNEL_NAME = "YOUR_TWITCH_CHANNEL_NAME"
 
 # Load Whisper model for transcription
-whisper_model = whisper.load_model("large")
+whisper_model = whisper.load_model("large-v2")
 
 # Define exceptions for specific language pairs
 exceptions = {
