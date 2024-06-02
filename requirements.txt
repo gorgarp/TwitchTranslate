@@ -6,4 +6,3 @@ torch
 transformers
 whisper
 langdetect
-cx-Freeze
