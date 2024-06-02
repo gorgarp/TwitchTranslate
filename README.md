@@ -7,11 +7,16 @@ This repository contains a Python script that transcribes and translates live au
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Setting Up a Virtual Environment](#setting-up-a-virtual-environment)
+- [Building the Application](#building-the-application)
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Adding a Language](#adding-a-language)
 - [How It Works](#how-it-works)
 - [CUDA vs CPU](#cuda-vs-cpu)
+- [Troubleshooting](#troubleshooting)
+- [Exceptions Handling](#exceptions-handling)
+- [Contributing](#contributing)
+- [Contact](#contact)
 - [License](#license)
 
 ## Features
@@ -46,6 +51,8 @@ This repository contains a Python script that transcribes and translates live au
       ```
 
 ## Setting Up a Virtual Environment
+Using a virtual environment is one approach to running the script. This method keeps your dependencies isolated from your system Python environment.
+
 1. **Create a Virtual Environment**
     ```bash
     python -m venv myenv
@@ -65,6 +72,31 @@ This repository contains a Python script that transcribes and translates live au
     ```bash
     pip install -r requirements.txt
     ```
+
+## Building the Application
+Alternatively, you can create a standalone executable using `cx_Freeze`. This method bundles all dependencies, including Python, into a single executable file.
+
+1. **Install cx_Freeze**
+    ```bash
+    pip install cx-Freeze
+    ```
+
+2. **Verify and Modify Paths in `setup.py`**
+    - **CUDA Path**: Update the `cuda_path` variable in `setup.py` to match your CUDA installation path. For example:
+      ```python
+      cuda_path = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.5/bin"
+      ```
+    - **FFmpeg Path**: Update the `ffmpeg_path` variable in `setup.py` to match the location of your FFmpeg executable. For example:
+      ```python
+      ffmpeg_path = "C:/Users/YourUsername/ffmpeg/bin"
+      ```
+
+3. **Run cx_Freeze to Build the Executable**
+    ```bash
+    python setup.py build
+    ```
+
+A pre-built version may be included in the [releases](https://github.com/gorgarp/TwitchTranslate/releases), but it may not always be up-to-date with the latest virtual environment version.
 
 ## Configuration
 1. **Set Up Twitch API Token**
@@ -126,15 +158,15 @@ The script can run on either CUDA (GPU) or CPU. Using CUDA significantly improve
       1. Download and install the [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads).
       2. Add CUDA to your PATH:
          ```powershell
-         [Environment]::SetEnvironmentVariable("CUDA_PATH", "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1", "User")
-         $env:Path += ";C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\bin"
+         [Environment]::SetEnvironmentVariable("CUDA_PATH", "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.5", "User")
+         $env:Path += ";C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.5\bin"
          ```
       3. Reboot your system to ensure the changes take effect.
       4. Verify the installation by running:
          ```bash
          nvcc --version
          ```
-      > **Note:** The above commands reference CUDA version 12.1. If you install a different version, adjust the paths accordingly.
+      > **Note:** The above commands reference CUDA version 12.5. If you install a different version, adjust the paths accordingly.
 
     - **macOS**: CUDA is not supported on macOS.
     
@@ -142,15 +174,15 @@ The script can run on either CUDA (GPU) or CPU. Using CUDA significantly improve
       1. Download and install the [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads).
       2. Add CUDA to your PATH:
          ```bash
-         export PATH=/usr/local/cuda-12.1/bin${PATH:+:${PATH}}
-         export LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64\
+         export PATH=/usr/local/cuda-12.5/bin${PATH:+:${PATH}}
+         export LD_LIBRARY_PATH=/usr/local/cuda-12.5/lib64\
                               ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
          ```
       3. Verify the installation by running:
          ```bash
          nvcc --version
          ```
-      > **Note:** The above commands reference CUDA version 12.1. If you install a different version, adjust the paths accordingly.
+      > **Note:** The above commands reference CUDA version 12.5. If you install a different version, adjust the paths accordingly.
 
 3. **Installing PyTorch with CUDA Support**
     - Install PyTorch with CUDA support:
@@ -176,13 +208,13 @@ The script can run on either CUDA (GPU) or CPU. Using CUDA significantly improve
 - **Logs and Debugging**:
   - Check the logs for any error messages or system messages to identify issues.
   - The script logs system messages and errors for easy debugging and monitoring.
-  - 
+
 ## Exceptions Handling
 - The script uses a default format `Helsinki-NLP/opus-mt-{source_lang}-{target_lang}` for loading models.
 - Some language pairs do not follow this format or may not exist under this naming convention. For these, specific exceptions are added.
 - Example: For Portuguese to English (`pt-en`), the script uses `Helsinki-NLP/opus-mt-mul-en` as the model name.
 - The exceptions are defined in a dictionary and checked during model loading.
-> **Note:**https://huggingface.co/Helsinki-NLP is where you can find language combinations.
+> **Note:** [Helsinki-NLP on Hugging Face](https://huggingface.co/Helsinki-NLP) is where you can find language combinations.
 
 ## Contributing
 1. **Fork the Repository**
