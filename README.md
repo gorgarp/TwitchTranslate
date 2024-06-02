@@ -96,7 +96,7 @@ Alternatively, you can create a standalone executable using `cx_Freeze`. This me
     python setup.py build
     ```
 
-A pre-built version may be included in the [releases](https://github.com/gorgarp/TwitchTranslate/releases), but it may not always be up-to-date with the latest virtual environment version.
+A pre-built version may be included in the the link below (it is way too big to add here) but it may not always be up-to-date with the latest virtual environment version.
 
 ## Configuration
 1. **Set Up Twitch API Token**
