@@ -1,13 +1,12 @@
 # Twitch Stream Transcription and Translation Script
 
-This repository contains a Python script that transcribes and translates live audio from a Twitch stream. The script uses OpenAI's Whisper model for transcription and Hugging Face's MarianMT model for translation. It supports dynamic language translation for the top 20 languages.
+This repository contains a Python script that transcribes and translates live audio from a Twitch stream. The script uses OpenAI's Whisper model for transcription and Hugging Face's MarianMT model for translation. It supports dynamic language translation for most languages. It has been tested on 20 so far.
 
 ## Table of Contents
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Setting Up a Virtual Environment](#setting-up-a-virtual-environment)
-- [Building the Application](#building-the-application)
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Adding a Language](#adding-a-language)
@@ -73,7 +72,6 @@ Using a virtual environment is one approach to running the script. This method k
     pip install -r requirements.txt
     ```
 
-
 ## Configuration
 1. **Set Up Twitch API Token**
     - Go to the [Twitch Developer Portal](https://dev.twitch.tv/console/apps).
@@ -95,16 +93,17 @@ Using a virtual environment is one approach to running the script. This method k
       ```
 
 ## Adding a Language
-1. **Check Supported Languages**
-    - The script currently supports the following languages:
+1. **Confirmed Languages**
+    - The script currently has been confirmed for the following languages:
       ```
       "en", "fr", "de", "es", "it", "nl", "sv", "pl", "pt", "ru", "zh", "ja", "ko", 
       "ar", "tr", "da", "fi", "no", "cs", "el"
       ```
-      > **Note:** Any combination of the supported languages should work. Ex. ES to EN, JA to FR, etc
-2. **Add Language to Supported List**
-    - To add a new language, ensure it is supported by MarianMT and Whisper models.
-    - Update the `supported_languages` list in the script with the new language code.
+      > **Note:** These have been tested, but it should work on any language pair found on [Helsinki-NLP on Hugging Face](https://huggingface.co/Helsinki-NLP).
+
+2. **Add Language Pair to Exceptions List**
+    - If you find a language pair on Hugging Face that does not follow the standard format `Helsinki-NLP/opus-mt-{source_lang}-{target_lang}`, you need to add an exception.
+    - Update the `exceptions` dictionary in the script with the new language pair and the corresponding model name. (See [Exceptions Handling](#exceptions-handling))
 
 ## How It Works
 1. **Transcription**
