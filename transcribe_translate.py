@@ -25,18 +25,35 @@ whisper_model = whisper.load_model("large")
 
 # Define exceptions for specific language pairs
 exceptions = {
+    "en-ja": "Helsinki-NLP/opus-tatoeba-en-ja",
+    "pt-en": "Helsinki-NLP/opus-mt-mul-en",
     "zh-en": "Helsinki-NLP/opus-mt-zh-en",
     "en-zh": "Helsinki-NLP/opus-mt-en-zh",
     "ja-en": "Helsinki-NLP/opus-mt-ja-en",
-    "en-ja": "Helsinki-NLP/opus-tatoeba-en-ja",
     "ko-en": "Helsinki-NLP/opus-mt-ko-en",
     "en-ko": "Helsinki-NLP/opus-mt-en-ko",
     "ar-en": "Helsinki-NLP/opus-mt-ar-en",
     "en-ar": "Helsinki-NLP/opus-mt-en-ar",
     "ru-en": "Helsinki-NLP/opus-mt-ru-en",
     "en-ru": "Helsinki-NLP/opus-mt-en-ru",
-    "pt-en": "Helsinki-NLP/opus-mt-mul-en",
-    "en-jp": "Helsinki-NLP/opus-tatoeba-en-ja"
+    "fr-de": "Helsinki-NLP/opus-mt-fr-de",
+    "de-fr": "Helsinki-NLP/opus-mt-de-fr",
+    "es-it": "Helsinki-NLP/opus-mt-es-it",
+    "it-es": "Helsinki-NLP/opus-mt-it-es",
+    "nl-sv": "Helsinki-NLP/opus-mt-nl-sv",
+    "sv-nl": "Helsinki-NLP/opus-mt-sv-nl",
+    "pl-ru": "Helsinki-NLP/opus-mt-pl-ru",
+    "ru-pl": "Helsinki-NLP/opus-mt-ru-pl",
+    "zh-ja": "Helsinki-NLP/opus-mt-zh-ja",
+    "ja-zh": "Helsinki-NLP/opus-mt-ja-zh",
+    "ko-ar": "Helsinki-NLP/opus-mt-ko-ar",
+    "ar-ko": "Helsinki-NLP/opus-mt-ar-ko",
+    "tr-da": "Helsinki-NLP/opus-mt-tr-da",
+    "da-tr": "Helsinki-NLP/opus-mt-da-tr",
+    "fi-no": "Helsinki-NLP/opus-mt-fi-no",
+    "no-fi": "Helsinki-NLP/opus-mt-no-fi",
+    "cs-el": "Helsinki-NLP/opus-mt-cs-el",
+    "el-cs": "Helsinki-NLP/opus-mt-el-cs"
 }
 
 # Load translation models dynamically based on the source and target languages
