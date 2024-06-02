@@ -2,6 +2,8 @@
 
 This repository contains a Python script that transcribes and translates live audio from a Twitch stream. The script uses OpenAI's Whisper model for transcription and Hugging Face's MarianMT model for translation. It supports dynamic language translation for most languages. It has been tested on 20 so far but should work on hundreds.
 
+In short, if you speak X and want to understand a stream where the speaker speaks Y, this will do that.
+
 ## Table of Contents
 - [Features](#features)
 - [Requirements](#requirements)
