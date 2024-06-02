@@ -4,6 +4,8 @@ This repository contains a Python script that transcribes and translates live au
 
 In short, if you speak X and want to understand a stream where the streamer speaks Y, this will do that.
 
+If you like this repo, hit the star, help others find it!
+
 ## Table of Contents
 - [Features](#features)
 - [Requirements](#requirements)
