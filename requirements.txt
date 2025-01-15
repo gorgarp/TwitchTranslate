@@ -7,3 +7,4 @@ transformers
 openai-whisper
 langdetect
 urllib3
+sentencepiece
