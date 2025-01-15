@@ -4,5 +4,5 @@ streamlink
 numpy
 torch
 transformers
-whisper
+openai-whisper
 langdetect
